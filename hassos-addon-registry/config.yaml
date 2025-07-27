@@ -1,5 +1,5 @@
 name: Docker Registry
-version: 4.0.4
+version: 4.0.5
 slug: docker-registry
 description: Run a private Docker Registry inside Home Assistant.
 startup: services
