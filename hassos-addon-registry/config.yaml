@@ -1,13 +1,14 @@
 name: Docker Registry
-version: 4.0.5
+version: 4.0.6
 slug: docker-registry
 description: Run a private Docker Registry inside Home Assistant.
-startup: services
+startup: application
 arch:
   - amd64
   - armv7
   - aarch64
 boot: auto
+init: false
 map:
   - config
   - ssl
