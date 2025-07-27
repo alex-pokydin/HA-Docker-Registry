@@ -3,7 +3,7 @@ ARG BUILD_FROM
 FROM $BUILD_FROM
 
 # Install necessary dependencies
-RUN apk add --no-cache curl
+RUN apk add --no-cache curl python3
 
 # Determine architecture and download appropriate registry binary
 RUN case "$(uname -m)" in \
@@ -25,3 +25,6 @@ COPY run.sh /
 
 # Make the run script executable
 RUN chmod +x /run.sh
+
+# Set the run script as the command
+CMD ["/run.sh"]
