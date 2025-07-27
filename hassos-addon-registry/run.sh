@@ -6,21 +6,26 @@
 # Fetch the configured port from the environment
 REGISTRY_PORT=$(bashio::config 'registry_port')
 
-# Create a simple index page
-cat > /var/lib/registry/index.html << EOF
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Docker Registry</title>
-</head>
-<body>
-    <h1>Docker Registry</h1>
-    <p>Registry is running on port ${REGISTRY_PORT}</p>
-    <p>This is a minimal implementation for Home Assistant testing.</p>
-</body>
-</html>
+# Create registry configuration
+cat > /etc/docker/registry/config.yml << EOF
+version: 0.1
+log:
+  level: debug
+storage:
+  filesystem:
+    rootdirectory: /var/lib/registry
+  delete:
+    enabled: true
+http:
+  addr: :${REGISTRY_PORT}
+  headers:
+    X-Content-Type-Options: [nosniff]
+health:
+  storagedriver:
+    enabled: true
+    interval: 10s
+    threshold: 3
 EOF
 
-# Run a simple HTTP server
-cd /var/lib/registry
-exec python3 -m http.server ${REGISTRY_PORT} 
+# Run Docker Registry
+exec /usr/local/bin/registry serve /etc/docker/registry/config.yml 
