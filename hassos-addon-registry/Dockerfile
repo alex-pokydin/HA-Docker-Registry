@@ -10,7 +10,7 @@ RUN echo "=== BUILD DEBUG INFO ===" && \
     echo "========================"
 
 # Install necessary dependencies
-RUN apk add --no-cache curl
+RUN apk add --no-cache curl file
 
 # Determine architecture and download appropriate registry binary
 RUN echo "=== ARCHITECTURE DETECTION ===" && \
