@@ -13,5 +13,11 @@ RUN curl -L https://github.com/distribution/distribution/releases/download/v2.8.
 # Create configuration and data directories
 RUN mkdir -p /etc/docker/registry /var/lib/registry
 
-# Copy s6-overlay configuration
-COPY rootfs /
+# Copy the run script
+COPY run.sh /
+
+# Make the run script executable
+RUN chmod +x /run.sh
+
+# Set the run script as the entrypoint
+ENTRYPOINT ["/run.sh"]
