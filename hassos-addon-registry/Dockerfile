@@ -13,11 +13,5 @@ RUN curl -L https://github.com/distribution/distribution/releases/download/v2.8.
 # Create configuration and data directories
 RUN mkdir -p /etc/docker/registry /var/lib/registry
 
-# Copy the run.sh script to the container
-COPY run.sh /
-
-# Ensure the run.sh script is executable
-RUN chmod a+x /run.sh
-
-# Set the run.sh script as the entrypoint for the container
-ENTRYPOINT ["/run.sh"]
+# Copy s6-overlay configuration
+COPY rootfs /

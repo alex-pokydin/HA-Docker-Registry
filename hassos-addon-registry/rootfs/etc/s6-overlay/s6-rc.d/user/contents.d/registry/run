@@ -28,4 +28,4 @@ health:
 EOF
 
 # Run Docker Registry directly
-exec /usr/local/bin/registry serve /etc/docker/registry/config.yml
+exec /usr/local/bin/registry serve /etc/docker/registry/config.yml 
