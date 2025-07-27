@@ -1,5 +1,8 @@
-FROM homeassistant/arm64-base:latest
-RUN apk add --no-cache docker
-COPY run.sh /run.sh
-RUN chmod +x /run.sh
-ENTRYPOINT ["/run.sh"]
+ARG BUILD_FROM
+FROM $BUILD_FROM
+
+# Copy data for add-on
+COPY run.sh /
+RUN chmod a+x /run.sh
+
+CMD [ "/run.sh" ]
