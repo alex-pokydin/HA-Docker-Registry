@@ -12,6 +12,20 @@ echo "Working directory: $(pwd)"
 REGISTRY_PORT=$(bashio::config 'registry_port')
 echo "Registry port from config: $REGISTRY_PORT"
 
+# Check if authentication is configured
+if bashio::config.has_value 'username' && bashio::config.has_value 'password'; then
+    echo "Authentication enabled"
+    USERNAME=$(bashio::config 'username')
+    PASSWORD=$(bashio::config 'password')
+    
+    # Create htpasswd file for authentication
+    mkdir -p /etc/docker/registry
+    htpasswd -Bbn "$USERNAME" "$PASSWORD" > /etc/docker/registry/htpasswd
+    echo "Authentication file created"
+else
+    echo "No authentication configured - registry will be open"
+fi
+
 # Check if registry binary exists
 if [ -f "/usr/local/bin/registry" ]; then
     echo "Registry binary: FOUND"
@@ -37,6 +51,20 @@ http:
   addr: :${REGISTRY_PORT}
   headers:
     X-Content-Type-Options: [nosniff]
+EOF
+
+# Add authentication if configured
+if bashio::config.has_value 'username' && bashio::config.has_value 'password'; then
+    cat >> /etc/docker/registry/config.yml << EOF
+auth:
+  htpasswd:
+    realm: basic-realm
+    path: /etc/docker/registry/htpasswd
+EOF
+fi
+
+# Add health check
+cat >> /etc/docker/registry/config.yml << EOF
 health:
   storagedriver:
     enabled: true

@@ -3,7 +3,7 @@ ARG BUILD_FROM
 FROM $BUILD_FROM
 
 # Install necessary dependencies
-RUN apk add --no-cache curl python3
+RUN apk add --no-cache curl python3 apache2-utils
 
 # Determine architecture and download appropriate registry binary
 RUN case "$(uname -m)" in \

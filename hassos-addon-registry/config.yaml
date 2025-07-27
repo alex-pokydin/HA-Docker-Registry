@@ -1,5 +1,5 @@
 name: Docker Registry
-version: 4.0.10
+version: 4.0.11
 slug: docker-registry
 description: Run a private Docker Registry inside Home Assistant.
 startup: application
@@ -17,5 +17,9 @@ ports:
   5001/tcp: 5001
 options:
   registry_port: 5001
+  username: null
+  password: null
 schema:
   registry_port: int
+  username: str?
+  password: str?
