@@ -11,6 +11,9 @@ boot: auto
 map:
   - config
   - ssl
+  - registry:rw
+ports:
+  5000/tcp: 5000
 options:
   registry_port: 5000
 schema:
