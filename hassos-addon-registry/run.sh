@@ -12,6 +12,10 @@ echo "Working directory: $(pwd)"
 REGISTRY_PORT=$(bashio::config 'registry_port')
 echo "Registry port from config: $REGISTRY_PORT"
 
+# Check if SSL is enabled
+SSL_ENABLED=$(bashio::config 'ssl_enabled')
+echo "SSL enabled: $SSL_ENABLED"
+
 # Check if authentication is configured
 if bashio::config.has_value 'username' && bashio::config.has_value 'password'; then
     echo "Authentication enabled"
@@ -52,6 +56,16 @@ http:
   headers:
     X-Content-Type-Options: [nosniff]
 EOF
+
+# Add SSL configuration if enabled
+if [ "$SSL_ENABLED" = "true" ]; then
+    echo "Configuring SSL..."
+    cat >> /etc/docker/registry/config.yml << EOF
+  tls:
+    certificate: /ssl/fullchain.pem
+    key: /ssl/privkey.pem
+EOF
+fi
 
 # Add authentication if configured
 if bashio::config.has_value 'username' && bashio::config.has_value 'password'; then
